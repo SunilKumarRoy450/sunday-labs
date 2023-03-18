@@ -8,6 +8,11 @@ const PostSchema = new Schema({
     ref: "User",
     required: true,
   },
+  place: {
+    type: String,
+    default: "New Delhi",
+    required: false,
+  },
   createdAt: {
     type: Date,
     default: Date.now,

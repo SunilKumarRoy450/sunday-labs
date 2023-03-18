@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import {
   Box,
   VStack,
@@ -13,69 +14,94 @@ import {
   IconButton,
   CardHeader,
   CardFooter,
+  ButtonGroup,
+  Tag,
 } from "@chakra-ui/react";
 
 import "./style.css";
-import { BiLike, BiChat, BiShare } from "react-icons/bi";
-import { BsThreeDotsVertical } from "react-icons/bs";
-
+import { BiNavigation, BiDotsHorizontalRounded } from "react-icons/bi";
+import { SlHeart } from "react-icons/sl";
+import { BsChat } from "react-icons/bs";
 const Post = () => {
+  const [posts, setPosts] = useState([]);
+  const [comments, setComments] = useState([]);
+
+  const getPosts = () => {
+    axios
+      .get(`http://localhost:8080/posts`)
+      .then((res) => setPosts(res.data))
+      .catch((err) => console.log(err));
+  };
+
+  const getComments = () => {
+    axios
+      .get(`http://localhost:8080/comments`)
+      .then((res) => setComments(res.data))
+      .catch((err) => console.log(err));
+  };
+  useEffect(() => {
+    getPosts();
+    getComments();
+  }, []);
+
   return (
     <Box className="post-main">
-      <VStack>
-        <Card maxW="lg">
-          <CardHeader>
-            <Flex spacing="4">
-              <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
-                <Avatar
-                  name="Segun Adebayo"
-                  src="https://bit.ly/sage-adebayo"
+      <VStack w={"100%"}>
+        {posts?.map((item) => (
+          <Card key={item._id} maxW="lg">
+            <CardHeader>
+              <Flex spacing="4">
+                <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
+                  <Avatar name={item.userId.username} src={item.userId.image} />
+
+                  <Box>
+                    <Heading size="sm">{item.userId.username}</Heading>
+                    <Text>{item?.place}, India</Text>
+                  </Box>
+                </Flex>
+                <IconButton
+                  variant="ghost"
+                  colorScheme="gray"
+                  aria-label="See menu"
+                  icon={<BiDotsHorizontalRounded />}
                 />
-
-                <Box>
-                  <Heading size="sm">Segun Adebayo</Heading>
-                  <Text>Creator, Chakra UI</Text>
-                </Box>
               </Flex>
-              <IconButton
-                variant="ghost"
-                colorScheme="gray"
-                aria-label="See menu"
-                icon={<BsThreeDotsVertical />}
-              />
-            </Flex>
-          </CardHeader>
-          <CardBody>
-            <Text>
-              With 
-            </Text>
-          </CardBody>
-          <Image
-            objectFit="cover"
-            src="https://images.unsplash.com/photo-1531403009284-440f080d1e12?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
-            alt="Chakra UI"
-          />
+            </CardHeader>
+            <CardBody>
+              <Image objectFit="cover" src={item.url} alt="Chakra UI" />
+            </CardBody>
 
-          <CardFooter
-            justify="space-between"
-            flexWrap="wrap"
-            sx={{
-              "& > button": {
-                minW: "136px",
-              },
-            }}
-          >
-            <Button flex="1" variant="ghost" leftIcon={<BiLike />}>
-              Like
-            </Button>
-            <Button flex="1" variant="ghost" leftIcon={<BiChat />}>
-              Comment
-            </Button>
-            <Button flex="1" variant="ghost" leftIcon={<BiShare />}>
-              Share
-            </Button>
-          </CardFooter>
-        </Card>
+            <CardFooter
+              justify="space-between"
+              flexWrap="wrap"
+              sx={{
+                "& > button": {
+                  minW: "136px",
+                },
+              }}
+            >
+              <ButtonGroup>
+                <Button
+                  flex="1"
+                  variant="ghost"
+                  leftIcon={<SlHeart />}
+                ></Button>
+                <Button flex="1" variant="ghost" leftIcon={<BsChat />}></Button>
+                <Button
+                  flex="1"
+                  variant="ghost"
+                  leftIcon={<BiNavigation />}
+                ></Button>
+              </ButtonGroup>
+              <Box>
+                <Text noOfLines={1}>
+                  <Tag>{item.userId.username.toLowerCase().split(" ")}</Tag>
+                  {item.caption}
+                </Text>
+              </Box>
+            </CardFooter>
+          </Card>
+        ))}
       </VStack>
     </Box>
   );
