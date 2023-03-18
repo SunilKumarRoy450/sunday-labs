@@ -15,9 +15,9 @@ router.get("/", async (req, res) => {
 
 //post
 router.post("/create", async (req, res) => {
-  const { title, body, userId, createdAt } = req.body;
+  const { caption, url, userId, createdAt } = req.body;
   try {
-    const posts = new PostModel({ title, body, userId, createdAt });
+    const posts = new PostModel({ caption, url, userId, createdAt });
     console.log(posts);
     await posts.save();
     return res.status(201).send(posts);

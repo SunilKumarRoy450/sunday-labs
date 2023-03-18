@@ -1,5 +1,6 @@
 const express = require("express");
 const CommentModel = require("../models/Comment.model");
+const UserModel = require("../models/User.model");
 const router = express.Router();
 
 //get comment
