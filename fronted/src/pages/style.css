@@ -1,0 +1,37 @@
+.main{
+    margin: 0;
+    padding: 0;
+    top: 0;
+}
+.nav-container{
+    border: 2px solid black;
+}
+.logo-box{
+    width: 20%;
+    border: 2px solid red;
+}
+.feeds-box{
+    width: 50%;
+    border: 2px solid green;
+}
+.detail-box{
+    width: 30%;
+    border: 2px solid red;
+}
+.container{
+    border: 2px solid black;
+}
+.sidebar-main{
+    width: 20%;
+    border: 2px solid red;
+    height: 100%;
+}
+
+.post-main{
+    width: 50%;
+    border: 2px solid green;
+}
+.userfollow-main{
+    width: 30%;
+    border: 2px solid red;
+}
