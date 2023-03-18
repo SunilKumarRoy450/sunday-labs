@@ -11,11 +11,11 @@ const CommentSchema = new Schema(
       type: String,
       required: true,
     },
-    postId:{
+    postId: {
       type: Schema.Types.ObjectId,
       ref: "Post",
       required: true,
-    }
+    },
   },
   { timestamps: true }
 );
