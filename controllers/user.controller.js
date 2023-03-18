@@ -1,16 +1,34 @@
-const { Schema, model } = require("mongoose");
+const express = require("express");
+const router = express.Router();
+const UserModel = require("../models/User.model");
 
-const UserSchema = new Schema(
-  {
-    username: { type: String, required: true },
-    email: { type: String, unique: true, required: true },
-    password: { type: String, required: true },
-    image: { type: String, required: false },
-    role: { type: String, enum: ["user", "admin"], default: "user" },
-  },
-  { timestamps: true }
-);
+//signup
+router.post("/register", async (req, res) => {
+  const { username, email, password, image } = req.body;
+  try {
+    const user = new UserModel({ username, email, password, image });
+    await user.save();
+    return res.status(201).send(user);
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+});
 
-const UserModel = new model("User", UserSchema);
+//login
+router.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const user = await UserModel.findOne({ email });
+    if (user) {
+      if (user.password === password) {
+        return res.status(200).send({ login: true, userData: user });
+      }
+    }
 
-module.exports = UserModel;
+    return res.send({ login: false });
+  } catch (error) {
+    console.log(error.message);
+  }
+});
+
+module.exports = router;
