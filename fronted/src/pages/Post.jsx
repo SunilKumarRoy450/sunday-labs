@@ -22,27 +22,8 @@ import "./style.css";
 import { BiNavigation, BiDotsHorizontalRounded } from "react-icons/bi";
 import { SlHeart } from "react-icons/sl";
 import { BsChat } from "react-icons/bs";
-const Post = () => {
-  const [posts, setPosts] = useState([]);
-  const [comments, setComments] = useState([]);
+const Post = ({posts}) => {
 
-  const getPosts = () => {
-    axios
-      .get(`http://localhost:8080/posts`)
-      .then((res) => setPosts(res.data))
-      .catch((err) => console.log(err));
-  };
-
-  const getComments = () => {
-    axios
-      .get(`http://localhost:8080/comments`)
-      .then((res) => setComments(res.data))
-      .catch((err) => console.log(err));
-  };
-  useEffect(() => {
-    getPosts();
-    getComments();
-  }, []);
 
   return (
     <Box className="post-main">

@@ -1,58 +1,91 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
+import axios from "axios";
 import {
-  Box,
-  Heading,
-  HStack,
-  Tag,
-  Avatar,
-  TagLabel,
-  VStack,Text
+    Box,
+    HStack,
+    Tag,
+    Avatar,
+    TagLabel,
+    VStack,
+    Text,
+    Flex,
 } from "@chakra-ui/react";
 import "./style.css";
 import Sidebar from "./Sidebar";
 import Post from "./Post";
 import UserFollow from "./UserFollow";
 const Home = () => {
+  const [posts, setPosts] = useState([]);
+  const [comments, setComments] = useState([]);
+  const data=JSON.parse(localStorage.getItem("loggedUser"))
+
+  const getPosts = () => {
+    axios
+      .get(`http://localhost:8080/posts`)
+      .then((res) => setPosts(res.data))
+      .catch((err) => console.log(err));
+  };
+
+  const getComments = () => {
+    axios
+      .get(`http://localhost:8080/comments`)
+      .then((res) => setComments(res.data))
+      .catch((err) => console.log(err));
+  };
+  useEffect(() => {
+    getPosts();
+    getComments();
+  }, []);
+
   return (
-    <Box className="main">
-      <HStack className="nav-container">
-        <Box className="logo-box">
-          <Text fontWeight={'700'} fontSize='xl' as='cite' size='md'>Instagram</Text>
+    <Box  className='main'>
+      <Flex className="nav-container">
+        <Box textAlign={"center"} className="logo-box">
+          <Text fontWeight={"600"} fontSize="xl" as="cite" size="md">
+            Instagram
+          </Text>
         </Box>
         <Box className="feeds-box">
           <HStack>
-            <Tag size="xs" colorScheme="red" borderRadius="full">
-              <Avatar
-                src="https://bit.ly/sage-adebayo"
-                size="lg"
-                name="Segun Adebayo"
-                ml={1}
-                mr={1}
-              />
-            </Tag>
+            {posts?.map((item) => (
+              <Tag
+                key={item._id}
+                size="xs"
+                colorScheme="red"
+                borderRadius="full"
+              >
+                <Avatar
+                  src={item.userId.image}
+                  size="lg"
+                  name={item.userId.username}
+                  ml={1}
+                  mr={1}
+                />
+              </Tag>
+            ))}
           </HStack>
         </Box>
         <Box className="detail-box">
           <Tag size="lg" colorScheme="red" borderRadius="full">
             <Avatar
-              src="https://bit.ly/sage-adebayo"
+              src={data?.userData.image}
               size="lg"
-              name="Segun Adebayo"
+              name={data?.userData.username}
               ml={-1}
               mr={2}
             />
             <VStack>
-              <TagLabel>sunil.roy</TagLabel>
-              <TagLabel>Sunil Roy</TagLabel>
+              <TagLabel>{data?.userData.username.toLowerCase().split(" ").join(".")}</TagLabel>
+              <TagLabel>{data?.userData.username}</TagLabel>
             </VStack>
           </Tag>
         </Box>
-      </HStack>
-      <HStack className="container">
+      </Flex>
+      <Flex className="container">
         <Sidebar />
-        <Post />
+        <Post posts={posts} />
         <UserFollow />
-      </HStack>
+      </Flex>
     </Box>
   );
 };

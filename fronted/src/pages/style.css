@@ -3,7 +3,9 @@
     padding: 0;
     top: 0;
     width: 100%;
+
 }
+
 .nav-container{
     border: 2px solid black;
     width: 100%;
@@ -26,15 +28,20 @@
 .sidebar-main{
     width: 20%;
     border: 2px solid red;
-    height: 100%;
 }
-
+.sidebar{
+    display:'inline-block';
+    width: 70%;
+}
 .post-main{
     width: 50%;
     border: 2px solid green;
+    height: 100vh;
+    overflow-y: auto;
+    
 }
+
 .userfollow-main{
     width: 30%;
     border: 2px solid red;
-   
 }
