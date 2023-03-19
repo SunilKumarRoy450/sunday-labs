@@ -27,8 +27,9 @@ router.post("/create", async (req, res) => {
 //like delete
 router.delete("/delete/:id", async (req, res) => {
   const { id } = req.params;
+  console.log(id)
   try {
-    const deletedData = await LikeModel.findByIdAndDelete({ _id: id });
+    const deletedData = await LikeModel.findOneAndDelete(id);
     return res.status(200).send(deletedData);
   } catch (error) {
     return res.send(error);

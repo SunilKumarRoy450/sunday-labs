@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 import {
   Box,
   VStack,
@@ -21,7 +22,25 @@ import "./style.css";
 import { BiNavigation, BiDotsHorizontalRounded } from "react-icons/bi";
 import { SlHeart } from "react-icons/sl";
 import { BsChat } from "react-icons/bs";
-const Post = ({ posts, filterLikesByPostId }) => {
+const Post = ({ posts, filterLikesByPostId, loggedInUserData, getLikes }) => {
+  const handleLike = (id) => {
+    const isLoggedInUserLiked = filterLikesByPostId(id)[1];
+    if (isLoggedInUserLiked) {
+      axios.delete(
+        `http://localhost:8080/likes/delete/${loggedInUserData?.userData?._id}`
+      );
+    } else {
+      const payload = {
+        like: true,
+        userId: loggedInUserData?.userData?._id,
+        postId: id,
+      };
+      axios.post(`http://localhost:8080/likes/create`, payload);
+    }
+    setTimeout(() => {
+      getLikes();
+    }, 500);
+  };
   return (
     <Box className="post-main">
       <VStack w={"100%"}>
@@ -62,6 +81,7 @@ const Post = ({ posts, filterLikesByPostId }) => {
                 <Button
                   flex="1"
                   variant="ghost"
+                  onClick={() => handleLike(item._id)}
                   leftIcon={
                     <SlHeart
                       style={{

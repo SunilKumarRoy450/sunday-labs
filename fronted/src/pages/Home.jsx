@@ -92,7 +92,9 @@ const Home = () => {
       .catch((err) => console.log(err));
     setIsOpen(false);
   };
-  console.log(likes);
+
+
+
   return (
     <Box className="main">
       <Flex className="nav-container">
@@ -150,7 +152,7 @@ const Home = () => {
           onOpen={() => setIsOpen(true)}
           onClose={() => setIsOpen(false)}
         />
-        <Post filterLikesByPostId={filterLikesByPostId} posts={posts} />
+        <Post getLikes={getLikes} loggedInUserData={data} filterLikesByPostId={filterLikesByPostId} posts={posts} />
         <UserFollow />
       </Flex>
     </Box>
