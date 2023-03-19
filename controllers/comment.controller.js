@@ -7,7 +7,6 @@ const router = express.Router();
 router.get("/", async (req, res) => {
   try {
     const allComments = await CommentModel.find().populate("userId");
-    console.log(allComments, "allComments");
     return res.status(200).send(allComments);
   } catch (error) {
     return res.send({ msg: "Something went wrong" });

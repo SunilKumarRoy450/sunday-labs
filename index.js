@@ -6,6 +6,7 @@ const connectDB = require("./config/db");
 const UserRoute = require("./controllers/user.controller");
 const PostRoute = require("./controllers/post.controller");
 const CommentRoute = require("./controllers/comment.controller");
+const LikesRoute = require("./controllers/like.controller");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -14,6 +15,7 @@ app.use(cors());
 app.use("/users", UserRoute);
 app.use("/posts", PostRoute);
 app.use("/comments", CommentRoute);
+app.use("/likes", LikesRoute);
 
 app.listen(PORT, async () => {
   try {

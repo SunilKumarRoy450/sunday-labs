@@ -9,7 +9,7 @@ router.get("/", async (req, res) => {
     const allPosts = await PostModel.find().populate("userId");
     return res.status(201).send(allPosts);
   } catch (error) {
-    return res.status(500).send({ msg: "Something wrong happened" });
+    return res.status(500).send(error.message);
   }
 });
 
@@ -18,7 +18,6 @@ router.post("/create", async (req, res) => {
   const { caption, url, userId, createdAt, place } = req.body;
   try {
     const posts = new PostModel({ caption, url, userId, createdAt, place });
-    console.log(posts);
     await posts.save();
     return res.status(201).send(posts);
   } catch (error) {

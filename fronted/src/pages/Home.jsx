@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import axios from "axios";
 import {
   Box,
@@ -15,15 +15,16 @@ import "./style.css";
 import Sidebar from "./Sidebar";
 import Post from "./Post";
 import UserFollow from "./UserFollow";
-import { LoginContext } from "../contexts/LoginContext";
+// const baseUrl='https://cyan-foal-robe.cyclic.app/posts'
 const Home = () => {
   const [posts, setPosts] = useState([]);
   const [comments, setComments] = useState([]);
-  const [createFile, setCreateFile] = useState(null);
+  const [likes, setLikes] = useState([]);
+  const [currentUserLikePost, setCurrentUserLikePost] = useState(false);
+  const [createFile, setCreateFile] = useState("");
   const [createCaption, setCreateCaption] = useState("");
-  const { userData: user } = useContext(LoginContext);
-  const { onClose } = useDisclosure();
   const data = JSON.parse(localStorage.getItem("loggedUser"));
+  const [isOpen, setIsOpen] = useState(false);
 
   const getPosts = () => {
     axios
@@ -39,28 +40,59 @@ const Home = () => {
       .catch((err) => console.log(err));
   };
 
+  const getLikes = () => {
+    axios
+      .get(`http://localhost:8080/likes`)
+      .then((res) => {
+        setLikes(res.data);
+        getCurrentUserLike(res.data);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const filterLikesByPostId = (postId) => {
+    const filteredData = likes.filter((item) => item.postId === postId);
+    const currentUserLiked = filteredData.filter(
+      (item) => item.userId._id === data?.userData._id
+    );
+    return [filteredData.length, currentUserLiked.length > 0];
+  };
+
+  const getCurrentUserLike = (liked) => {
+    const isCurrentUserLiked = liked.filter(
+      (item) => item.userId._id === data?.userData._id
+    );
+
+    if (isCurrentUserLiked.length > 0) {
+      console.log(isCurrentUserLiked, "isCurrentUserLiked");
+      setCurrentUserLikePost(true);
+    } else {
+      setCurrentUserLikePost(false);
+    }
+  };
+
   useEffect(() => {
     getPosts();
     getComments();
+    getLikes();
   }, []);
 
-  
-const fileUrl = createFile && URL.createObjectURL(createFile);
   const handleOnClickPostCreation = () => {
-
     axios
       .post(`http://localhost:8080/posts/create`, {
-        url: fileUrl,
+        url: createFile,
         caption: createCaption,
         userId: data?.userData._id,
       })
       .then((res) => {
         getPosts();
         getComments();
+        getLikes();
       })
       .catch((err) => console.log(err));
+    setIsOpen(false);
   };
-
+  console.log(likes);
   return (
     <Box className="main">
       <Flex className="nav-container">
@@ -114,8 +146,11 @@ const fileUrl = createFile && URL.createObjectURL(createFile);
           createCaption={createCaption}
           setCreateCaption={setCreateCaption}
           handleOnClickPostCreation={handleOnClickPostCreation}
+          isOpen={isOpen}
+          onOpen={() => setIsOpen(true)}
+          onClose={() => setIsOpen(false)}
         />
-        <Post posts={posts} />
+        <Post filterLikesByPostId={filterLikesByPostId} posts={posts} />
         <UserFollow />
       </Flex>
     </Box>

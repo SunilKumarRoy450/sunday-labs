@@ -19,7 +19,6 @@ router.post("/login", async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await UserModel.findOne({ email });
-    console.log(user)
     if (user) {
       if (user.password === password) {
         return res.status(200).send({ login: true, userData: user });
@@ -31,7 +30,5 @@ router.post("/login", async (req, res) => {
     console.log(error.message);
   }
 });
-
-
 
 module.exports = router;

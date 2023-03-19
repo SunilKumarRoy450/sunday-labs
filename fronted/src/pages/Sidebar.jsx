@@ -12,13 +12,10 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
-  useDisclosure,
   Button,
   Text,
   Input,
-  Image,
-  Flex,
-  ButtonGroup,
+ 
   Divider,
 } from "@chakra-ui/react";
 import "./style.css";
@@ -28,9 +25,8 @@ const Sidebar = ({
   setCreateFile,
   createCaption,
   setCreateCaption,
-  handleOnClickPostCreation,
+  handleOnClickPostCreation,onOpen,isOpen,onClose
 }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const loggedUserData = JSON.parse(localStorage.getItem("loggedUser"));
   const data = [
     {
@@ -66,8 +62,9 @@ const Sidebar = ({
   ];
 
   const handleOnChangeInput = (e) => {
-    console.log(e.target.files[0]);
-    setCreateFile(e.target.files[0]);
+   const {name,value}=e.target;
+   setCreateFile({...createFile})
+
   };
 
   return (
@@ -124,27 +121,14 @@ const Sidebar = ({
             <Text fontWeight="bold" mb="1rem">
               be the first one to create today's post
             </Text>
-            {createFile && (
-              <Box w={"40%"} h={"8rem"}>
-                <Flex>
-                  <Image
-                    width={"100px"}
-                    alt="not found"
-                    src={URL.createObjectURL(createFile)}
-                  />
-                  <ButtonGroup margin={"auto"}>
-                    <Button onClick={() => setCreateFile(null)}>Remove</Button>
-                  </ButtonGroup>
-                </Flex>
-              </Box>
-            )}
+
             <Divider />
             <Input
               onChange={handleOnChangeInput}
               name="createFile"
-              style={{ border: "none" }}
+              // style={{ border: "none" }}
               h={"3rem"}
-              type="file"
+              value={createFile}
               placeholder="upload your files..."
             />
             <Input

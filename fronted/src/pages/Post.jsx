@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React from "react";
 import {
   Box,
   VStack,
@@ -22,9 +21,7 @@ import "./style.css";
 import { BiNavigation, BiDotsHorizontalRounded } from "react-icons/bi";
 import { SlHeart } from "react-icons/sl";
 import { BsChat } from "react-icons/bs";
-const Post = ({posts}) => {
-
-
+const Post = ({ posts, filterLikesByPostId }) => {
   return (
     <Box className="post-main">
       <VStack w={"100%"}>
@@ -65,8 +62,16 @@ const Post = ({posts}) => {
                 <Button
                   flex="1"
                   variant="ghost"
-                  leftIcon={<SlHeart />}
-                ></Button>
+                  leftIcon={
+                    <SlHeart
+                      style={{
+                        color: filterLikesByPostId(item._id)[1] ? "red" : null,
+                      }}
+                    />
+                  }
+                >
+                  <span>{filterLikesByPostId(item._id)[0]}</span>
+                </Button>
                 <Button flex="1" variant="ghost" leftIcon={<BsChat />}></Button>
                 <Button
                   flex="1"
