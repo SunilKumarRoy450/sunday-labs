@@ -1,23 +1,29 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import {
-    Box,
-    HStack,
-    Tag,
-    Avatar,
-    TagLabel,
-    VStack,
-    Text,
-    Flex,
+  Box,
+  HStack,
+  Tag,
+  Avatar,
+  TagLabel,
+  VStack,
+  Text,
+  Flex,
+  useDisclosure,
 } from "@chakra-ui/react";
 import "./style.css";
 import Sidebar from "./Sidebar";
 import Post from "./Post";
 import UserFollow from "./UserFollow";
+import { LoginContext } from "../contexts/LoginContext";
 const Home = () => {
   const [posts, setPosts] = useState([]);
   const [comments, setComments] = useState([]);
-  const data=JSON.parse(localStorage.getItem("loggedUser"))
+  const [createFile, setCreateFile] = useState(null);
+  const [createCaption, setCreateCaption] = useState("");
+  const { userData: user } = useContext(LoginContext);
+  const { onClose } = useDisclosure();
+  const data = JSON.parse(localStorage.getItem("loggedUser"));
 
   const getPosts = () => {
     axios
@@ -32,13 +38,31 @@ const Home = () => {
       .then((res) => setComments(res.data))
       .catch((err) => console.log(err));
   };
+
   useEffect(() => {
     getPosts();
     getComments();
   }, []);
 
+  
+const fileUrl = createFile && URL.createObjectURL(createFile);
+  const handleOnClickPostCreation = () => {
+
+    axios
+      .post(`http://localhost:8080/posts/create`, {
+        url: fileUrl,
+        caption: createCaption,
+        userId: data?.userData._id,
+      })
+      .then((res) => {
+        getPosts();
+        getComments();
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
-    <Box  className='main'>
+    <Box className="main">
       <Flex className="nav-container">
         <Box textAlign={"center"} className="logo-box">
           <Text fontWeight={"600"} fontSize="xl" as="cite" size="md">
@@ -75,14 +99,22 @@ const Home = () => {
               mr={2}
             />
             <VStack>
-              <TagLabel>{data?.userData.username.toLowerCase().split(" ").join(".")}</TagLabel>
+              <TagLabel>
+                {data?.userData.username.toLowerCase().split(" ").join(".")}
+              </TagLabel>
               <TagLabel>{data?.userData.username}</TagLabel>
             </VStack>
           </Tag>
         </Box>
       </Flex>
       <Flex className="container">
-        <Sidebar />
+        <Sidebar
+          createFile={createFile}
+          setCreateFile={setCreateFile}
+          createCaption={createCaption}
+          setCreateCaption={setCreateCaption}
+          handleOnClickPostCreation={handleOnClickPostCreation}
+        />
         <Post posts={posts} />
         <UserFollow />
       </Flex>

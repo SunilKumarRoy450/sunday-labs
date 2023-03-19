@@ -5,13 +5,33 @@ import {
   Tag,
   Avatar,
   TagLabel,
-  Container,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
+  Button,
+  Text,
+  Input,
+  Image,
+  Flex,
+  ButtonGroup,
+  Divider,
 } from "@chakra-ui/react";
 import "./style.css";
 
-const Sidebar = () => {
+const Sidebar = ({
+  createFile,
+  setCreateFile,
+  createCaption,
+  setCreateCaption,
+  handleOnClickPostCreation,
+}) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const loggedUserData = JSON.parse(localStorage.getItem("loggedUser"));
-
   const data = [
     {
       id: 1,
@@ -43,15 +63,20 @@ const Sidebar = () => {
       title: "Notification",
       image: "https://img.icons8.com/ios/1x/loading-heart.gif",
     },
-    {
-      id: 7,
-      title: "Create",
-      image: "https://img.icons8.com/ios/1x/plus-2-math.png",
-    },
   ];
+
+  const handleOnChangeInput = (e) => {
+    console.log(e.target.files[0]);
+    setCreateFile(e.target.files[0]);
+  };
+
   return (
     <Box className="sidebar-main">
-      <VStack className="sidebar" spacing="34px">
+      <VStack
+        style={{ display: "inline-block" }}
+        className="sidebar"
+        spacing="34px"
+      >
         {data?.map((item) => (
           <Tag key={item.id} size="lg" borderRadius="full">
             <Avatar
@@ -59,11 +84,21 @@ const Sidebar = () => {
               size="xs"
               name="Segun Adebayo"
               ml={3}
-              mr={12}
+              mr={10}
             />
             <TagLabel>{item.title}</TagLabel>
           </Tag>
         ))}
+        <Tag onClick={onOpen} size="lg" borderRadius="full">
+          <Avatar
+            src="https://img.icons8.com/ios/1x/plus-2-math.png"
+            size="xs"
+            name="createIcon"
+            ml={3}
+            mr={10}
+          />
+          <TagLabel>Create</TagLabel>
+        </Tag>
         <Tag size="lg" borderRadius="full">
           <Avatar
             src={loggedUserData.userData.image}
@@ -75,6 +110,64 @@ const Sidebar = () => {
           <TagLabel>Profile</TagLabel>
         </Tag>
       </VStack>
+      <Modal
+        size={"xl"}
+        blockScrollOnMount={false}
+        isOpen={isOpen}
+        onClose={onClose}
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Post</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody h={"5rem"}>
+            <Text fontWeight="bold" mb="1rem">
+              be the first one to create today's post
+            </Text>
+            {createFile && (
+              <Box w={"40%"} h={"8rem"}>
+                <Flex>
+                  <Image
+                    width={"100px"}
+                    alt="not found"
+                    src={URL.createObjectURL(createFile)}
+                  />
+                  <ButtonGroup margin={"auto"}>
+                    <Button onClick={() => setCreateFile(null)}>Remove</Button>
+                  </ButtonGroup>
+                </Flex>
+              </Box>
+            )}
+            <Divider />
+            <Input
+              onChange={handleOnChangeInput}
+              name="createFile"
+              style={{ border: "none" }}
+              h={"3rem"}
+              type="file"
+              placeholder="upload your files..."
+            />
+            <Input
+              onChange={(e) => setCreateCaption(e.target.value)}
+              name="caption"
+              value={createCaption}
+              h={"3rem"}
+              placeholder="caption....."
+            />
+          </ModalBody>
+
+          <ModalFooter>
+            <Button
+              variant={"outline"}
+              colorScheme="teal"
+              mr={3}
+              onClick={handleOnClickPostCreation}
+            >
+              Post
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 };
