@@ -38,7 +38,7 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { getUserData } = useContext(LoginContext);
-  
+
   useEffect(() => {
     let userLoggedIn = JSON.parse(localStorage.getItem("loggedUser"));
     getUserData(userLoggedIn);
@@ -52,16 +52,21 @@ const LoginForm = () => {
   const handeOnClickLoginForm = async (e) => {
     e.preventDefault();
 
-    const data = await axios.post(`https://cyan-foal-robe.cyclic.app/users/login`, {
-      email: formValue.email,
-      password: formValue.password,
-    });
+    const data = await axios.post(
+      `https://cyan-foal-robe.cyclic.app/users/login`,
+      {
+        email: formValue.email,
+        password: formValue.password,
+      }
+    );
     const loginData = data.data.userData;
     if (loginData.login) {
       localStorage.setItem("loggedUser", JSON.stringify(loginData));
-    } 
-    alert("Please SignUp First")
-    navigate("/")
+      navigate("/home");
+    } else {
+      alert("Please SignUp First");
+      navigate("/");
+    }
   };
 
   //Signup
@@ -94,7 +99,6 @@ const LoginForm = () => {
             />
           </Box>
           <Box className="form-container">
-
             <FormControl
               borderRadius={".2rem"}
               padding={".5rem"}
@@ -103,7 +107,7 @@ const LoginForm = () => {
             >
               <Stack spacing={5}>
                 <Heading>Login</Heading>
-          <Button onClick={onOpen}>Sign Up</Button>
+                <Button onClick={onOpen}>Sign Up</Button>
                 <FormLabel>Email</FormLabel>
                 <Input
                   onChange={handleOnChange}
