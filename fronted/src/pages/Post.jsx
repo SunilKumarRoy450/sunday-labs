@@ -36,7 +36,7 @@ const Post = ({
     const isLoggedInUserLiked = filterLikesByPostId(id)[1];
     if (isLoggedInUserLiked) {
       axios.delete(
-        `http://localhost:8080/likes/delete/${loggedInUserData?.userData?._id}`
+        `https://cyan-foal-robe.cyclic.app/likes/delete/${loggedInUserData?.userData?._id}`
       );
     } else {
       const payload = {
@@ -44,7 +44,7 @@ const Post = ({
         userId: loggedInUserData?.userData?._id,
         postId: id,
       };
-      axios.post(`http://localhost:8080/likes/create`, payload);
+      axios.post(`https://cyan-foal-robe.cyclic.app/likes/create`, payload);
     }
     setTimeout(() => {
       getLikes();
@@ -66,7 +66,7 @@ const Post = ({
       comment,
     };
 
-    axios.post(`http://localhost:8080/comments/create`, payload);
+    axios.post(`https://cyan-foal-robe.cyclic.app/comments/create`, payload);
     setComment("");
   };
 

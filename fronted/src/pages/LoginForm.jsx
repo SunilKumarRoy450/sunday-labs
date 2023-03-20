@@ -52,7 +52,7 @@ const LoginForm = () => {
   const handeOnClickLoginForm = async (e) => {
     e.preventDefault();
 
-    const data = await axios.post(`http://localhost:8080/users/login`, {
+    const data = await axios.post(`https://cyan-foal-robe.cyclic.app/users/login`, {
       email: formValue.email,
       password: formValue.password,
     });
@@ -68,7 +68,7 @@ const LoginForm = () => {
 
   const handeOnClickSignupForm = (e) => {
     e.preventDefault();
-    axios.post(`http://localhost:8080/users/register`, {
+    axios.post(`https://cyan-foal-robe.cyclic.app/users/register`, {
       username: signupFormValue.username,
       email: signupFormValue.email,
       password: signupFormValue.password,

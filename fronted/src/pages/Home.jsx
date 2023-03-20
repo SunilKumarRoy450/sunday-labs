@@ -14,7 +14,7 @@ import "./style.css";
 import Sidebar from "./Sidebar";
 import Post from "./Post";
 import UserFollow from "./UserFollow";
-// const baseUrl='https://cyan-foal-robe.cyclic.app/posts'
+// const baseUrl=https://cyan-foal-robe.cyclic.app/
 const Home = () => {
   const [posts, setPosts] = useState([]);
   const [comments, setComments] = useState([]);
@@ -27,21 +27,21 @@ const Home = () => {
 
   const getPosts = () => {
     axios
-      .get(`http://localhost:8080/posts`)
+      .get(`https://cyan-foal-robe.cyclic.app/posts`)
       .then((res) => setPosts(res.data))
       .catch((err) => console.log(err));
   };
 
   const getComments = () => {
     axios
-      .get(`http://localhost:8080/comments`)
+      .get(`https://cyan-foal-robe.cyclic.app/comments`)
       .then((res) => setComments(res.data))
       .catch((err) => console.log(err));
   };
 
   const getLikes = () => {
     axios
-      .get(`http://localhost:8080/likes`)
+      .get(`https://cyan-foal-robe.cyclic.app/likes`)
       .then((res) => {
         setLikes(res.data);
         getCurrentUserLike(res.data);
@@ -77,7 +77,7 @@ const Home = () => {
 
   const handleOnClickPostCreation = () => {
     axios
-      .post(`http://localhost:8080/posts/create`, {
+      .post(`https://cyan-foal-robe.cyclic.app/posts/create`, {
         url: createFile,
         caption: createCaption,
         userId: data?.userData._id,
