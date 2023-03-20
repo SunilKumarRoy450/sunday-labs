@@ -11,8 +11,8 @@
 * Home Page
 ![insta](https://user-images.githubusercontent.com/101394814/226251277-e5891908-0785-41bf-8048-3f5aedcd4d27.png)
 
-*Login Page
+* Login Page
 ![insta1](https://user-images.githubusercontent.com/101394814/226251349-a89ce214-b45c-4b9f-9e8f-fa20c4bff835.png)
 
-*Signup Page
+* Signup Page
 ![insta2](https://user-images.githubusercontent.com/101394814/226251468-c2481a39-3402-4ef5-8a96-614ee25ba192.png)
