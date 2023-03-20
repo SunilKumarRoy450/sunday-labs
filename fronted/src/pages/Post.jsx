@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import {
   Box,
@@ -16,13 +16,22 @@ import {
   CardFooter,
   ButtonGroup,
   Tag,
+  Input,
 } from "@chakra-ui/react";
 
 import "./style.css";
 import { BiNavigation, BiDotsHorizontalRounded } from "react-icons/bi";
 import { SlHeart } from "react-icons/sl";
 import { BsChat } from "react-icons/bs";
-const Post = ({ posts, filterLikesByPostId, loggedInUserData, getLikes }) => {
+const Post = ({
+  posts,
+  filterLikesByPostId,
+  loggedInUserData,
+  getLikes,
+  commentsData,
+}) => {
+  const [isCommentButtonClicked, setIsCommentButtonClicked] = useState(false);
+  const [comment, setComment] = useState("");
   const handleLike = (id) => {
     const isLoggedInUserLiked = filterLikesByPostId(id)[1];
     if (isLoggedInUserLiked) {
@@ -41,6 +50,26 @@ const Post = ({ posts, filterLikesByPostId, loggedInUserData, getLikes }) => {
       getLikes();
     }, 500);
   };
+
+  const handleComment = () => {
+    setIsCommentButtonClicked(!isCommentButtonClicked);
+  };
+
+  const handleOnCommentChange = (e) => {
+    setComment(e.target.value);
+  };
+
+  const handleSubmitComment = (postId) => {
+    const payload = {
+      userId: loggedInUserData?.userData?._id,
+      postId,
+      comment,
+    };
+
+    axios.post(`http://localhost:8080/comments/create`, payload);
+    setComment("");
+  };
+
   return (
     <Box className="post-main">
       <VStack w={"100%"}>
@@ -92,7 +121,12 @@ const Post = ({ posts, filterLikesByPostId, loggedInUserData, getLikes }) => {
                 >
                   <span>{filterLikesByPostId(item._id)[0]}</span>
                 </Button>
-                <Button flex="1" variant="ghost" leftIcon={<BsChat />}></Button>
+                <Button
+                  onClick={handleComment}
+                  flex="1"
+                  variant="ghost"
+                  leftIcon={<BsChat />}
+                ></Button>
                 <Button
                   flex="1"
                   variant="ghost"
@@ -106,6 +140,23 @@ const Post = ({ posts, filterLikesByPostId, loggedInUserData, getLikes }) => {
                 </Text>
               </Box>
             </CardFooter>
+            {isCommentButtonClicked && (
+              <>
+                {commentsData?.map((item) => (
+                  <Box key={item._id}>{item.comment}</Box>
+                ))}
+                <Flex>
+                  <Input
+                    placeholder="comment...."
+                    value={comment}
+                    onChange={handleOnCommentChange}
+                  />
+                  <Button onClick={() => handleSubmitComment(item?._id)}>
+                    Comment
+                  </Button>
+                </Flex>
+              </>
+            )}
           </Card>
         ))}
       </VStack>

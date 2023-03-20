@@ -9,7 +9,6 @@ import {
   VStack,
   Text,
   Flex,
-  useDisclosure,
 } from "@chakra-ui/react";
 import "./style.css";
 import Sidebar from "./Sidebar";
@@ -64,7 +63,6 @@ const Home = () => {
     );
 
     if (isCurrentUserLiked.length > 0) {
-      console.log(isCurrentUserLiked, "isCurrentUserLiked");
       setCurrentUserLikePost(true);
     } else {
       setCurrentUserLikePost(false);
@@ -93,13 +91,11 @@ const Home = () => {
     setIsOpen(false);
   };
 
-
-
   return (
     <Box className="main">
       <Flex className="nav-container">
         <Box textAlign={"center"} className="logo-box">
-          <Text fontWeight={"600"} fontSize="xl" as="cite" size="md">
+          <Text color={'white'} fontWeight={"600"} fontSize="xl" as="cite" size="md">
             Instagram
           </Text>
         </Box>
@@ -152,7 +148,14 @@ const Home = () => {
           onOpen={() => setIsOpen(true)}
           onClose={() => setIsOpen(false)}
         />
-        <Post getLikes={getLikes} loggedInUserData={data} filterLikesByPostId={filterLikesByPostId} posts={posts} />
+        <Post
+          commentsData={comments}
+          getLikes={getLikes}
+          loggedInUserData={data}
+          filterLikesByPostId={filterLikesByPostId}
+          posts={posts}
+          getPosts={getPosts}
+        />
         <UserFollow />
       </Flex>
     </Box>

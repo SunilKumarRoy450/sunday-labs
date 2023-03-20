@@ -3,31 +3,24 @@
     padding: 0;
     top: 0;
     width: 100%;
-
+background-color: rgb(29, 28, 28);
 }
 
 .nav-container{
-    border: 2px solid black;
     width: 100%;
 }
 .logo-box{
     width: 20%;
-    border: 2px solid red;
 }
 .feeds-box{
     width: 50%;
-    border: 2px solid green;
 }
 .detail-box{
     width: 30%;
-    border: 2px solid red;
 }
-.container{
-    border: 2px solid black;
-}
+
 .sidebar-main{
     width: 20%;
-    border: 2px solid red;
 }
 .sidebar{
     
@@ -35,13 +28,28 @@
 }
 .post-main{
     width: 50%;
-    border: 2px solid green;
     height: 100vh;
     overflow-y: auto;
-    
+    margin-top: .5rem;
 }
 
 .userfollow-main{
     width: 30%;
-    border: 2px solid red;
+}
+
+.form-main{
+width: 100%;
+}
+.container-main-form{
+    width: 40%;
+    margin: auto;
+    margin-top: 5rem;
+}
+.form-img{
+    width: 50%;
+    
+}
+.form-container{
+width: 50%;
+
 }
