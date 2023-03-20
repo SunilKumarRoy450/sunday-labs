@@ -4,7 +4,7 @@
 *Api calls for posts,users,comment and likes
 *Tried to follow MVC method
 *Here I have used Chakra UI for User Interface
-
+## Note:- ## Deployement link is broken so I have added all pages image here... , It is working properly in local
 *Home
 * You can create your post on clicking the create-button which is highlighted in below pic with yellow color.This is the home page of Instagram
 ![insta](https://user-images.githubusercontent.com/101394814/226251277-e5891908-0785-41bf-8048-3f5aedcd4d27.png)
