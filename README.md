@@ -1,11 +1,12 @@
 # sunday-labs
+## Instagram ##
 *Here you will be able to, you can create your feeds,like and dislike post, you will be able to show who is logged in with their image amd name, you can see the comment ,yet comment part is not fully functional due to the deadline but you will be able to create comment
 *Api calls for posts,users,comment and likes
 *Tried to follow MVC method
 *Here I have used Chakra UI for User Interface
 
 *Home
-* You can create your post on clicking the create-button which is highlighted in below pic.This is the home page of Instagram
+* You can create your post on clicking the create-button which is highlighted in below pic with yellow color.This is the home page of Instagram
 ![insta](https://user-images.githubusercontent.com/101394814/226251277-e5891908-0785-41bf-8048-3f5aedcd4d27.png)
 
 *Login
